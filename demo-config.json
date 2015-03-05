@@ -1,0 +1,26 @@
+{
+  "name":"Bindy WebSocket Connector DEMO",
+  "summary":"This is a simple demo, uses bindy to convert CSV file into Pojo and then export data using websocket",
+  "author":"Christina Lin",
+  "level":"Beginner",
+  "published":true,
+  "prerequisites":"Java VM 1.6 or 1.7, Maven",
+  "targetProduct":"JBoss Fuse",
+  "productVersion":"JBoss Fuse 6.1",
+  "technologies": ["Camel","Fuse", "Karaf","Fabric8"],
+  "links": [ 
+    { 
+      "name":"Video",
+      "url":"https://vimeo.com/121135136"
+    },
+    {
+      "name":"Blog",
+      "url":"http://wei-meilin.blogspot.tw/2015/03/jboss-fuse-parsing-csv-file-playing.html"
+    }
+    ,
+    {
+      "name":"Code",
+      "url":"https://github.com/jbossdemocentral/boss-fuse-component-websocket"
+    }
+  ]
+}

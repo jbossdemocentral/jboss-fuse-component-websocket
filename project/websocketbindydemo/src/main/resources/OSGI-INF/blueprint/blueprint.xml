@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/blueprint"
+       xsi:schemaLocation="
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+  <bean id="productProcessorBean" class="org.blogdemo.websocketbindydemo.ProductProcessBean" />
+
+  <camelContext trace="false" id="blueprintContext" xmlns="http://camel.apache.org/schema/blueprint">
+    <route id="wsRoute">
+        <from uri="file://csv/?noop=true&amp;delete=true"/>
+        <split>
+            <tokenize token="\n" />
+            <unmarshal>
+                <bindy classType="org.blogdemo.websocketbindydemo.Product" type="Csv"/>
+            </unmarshal>
+            <wireTap uri="direct:storedata">
+            </wireTap>
+            <convertBodyTo type="java.lang.String"/>
+            <to uri="websocket://demo?host=localhost&amp;port=9292&amp;sendToAll=true"/>
+        </split>
+    </route>
+    <route id="storeDataRoute">
+        <from uri="direct:storedata"/>
+        <bean method="addProduct" ref="productProcessorBean"/>
+        <log message="${body}"/>
+    </route>
+</camelContext>
+
+</blueprint>
