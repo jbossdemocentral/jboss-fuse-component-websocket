@@ -7,26 +7,26 @@
        http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
 
   <bean id="productProcessorBean" class="org.blogdemo.websocketbindydemo.ProductProcessBean" />
+  <bean id="bindyDataformat" class="org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat">
+  	<argument value="org.blogdemo.websocketbindydemo.Product" />
+  </bean>
 
   <camelContext trace="false" id="blueprintContext" xmlns="http://camel.apache.org/schema/blueprint">
-    <route id="wsRoute">
-        <from uri="file://csv/?noop=true&amp;delete=true"/>
-        <split>
-            <tokenize token="\n" />
-            <unmarshal>
-                <bindy classType="org.blogdemo.websocketbindydemo.Product" type="Csv"/>
-            </unmarshal>
-            <wireTap uri="direct:storedata">
-            </wireTap>
-            <convertBodyTo type="java.lang.String"/>
-            <to uri="websocket://demo?host=localhost&amp;port=9292&amp;sendToAll=true"/>
-        </split>
-    </route>
-    <route id="storeDataRoute">
-        <from uri="direct:storedata"/>
-        <bean method="addProduct" ref="productProcessorBean"/>
-        <log message="${body}"/>
-    </route>
+  <route id="wsRoute">
+    <from uri="file://csv/?noop=true&amp;delete=true"/>
+    <split>
+      <tokenize token="\n"></tokenize>
+      <unmarshal ref="bindyDataformat" />
+      <wireTap uri="direct:storedata"/>
+      <convertBodyTo type="java.lang.String"/>
+      <to uri="websocket://demo?host=localhost&amp;port=9292&amp;sendToAll=true"/>
+    </split>
+  </route>
+  <route id="storeDataRoute">
+    <from uri="direct:storedata"/>
+    <bean ref="productProcessorBean" method="addProduct"/>
+    <log message="${body}"/>
+  </route>
 </camelContext>
 
 </blueprint>
