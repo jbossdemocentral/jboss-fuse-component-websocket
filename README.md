@@ -29,6 +29,7 @@ Or you can create your own container with Fabric Console.
 ![Fabric list](https://raw.githubusercontent.com/weimeilin79/jboss-fuse-component-websocket/master/doc/pic/02container-create.png?raw=true)
 
 Open the websocket.html under project/websocketbindydemo file with a browser that supports HTML 5.
+
 And then send the CSV file to the endpoint to kick off the camel route. 
 Place the product.csv file from 
 ```
